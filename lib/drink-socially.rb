@@ -1,4 +1,5 @@
 require 'drink-socially/http_service'
+require 'drink-socially/version'
 
 module NRB
   module Untappd

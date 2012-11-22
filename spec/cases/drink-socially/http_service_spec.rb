@@ -18,13 +18,6 @@ describe NRB::HTTPService do
     let(:status)     { 200 }
     let(:verb)       { :get }
 
-#    before do
-#      connection_response.should_receive(:body).and_return(body)
-#      connection_response.should_receive(:headers).and_return(headers)
-#      connection_response.should_receive(:status).and_return(status)
-#      connection.should_receive(verb).with(path,args).and_return(connection_response)
-#    end
-
     context 'successful requests' do
 
       before do
