@@ -1,5 +1,6 @@
 require 'drink-socially/http_service'
 require 'drink-socially/version'
+require 'drink-socially/helpers/symbolifer'
 
 module NRB
   module Untappd
@@ -11,7 +12,6 @@ module NRB
 
     class << self
       attr_accessor :http_service
-
 
       def http_service=(service) 
         @http_service = service

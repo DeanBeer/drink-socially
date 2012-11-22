@@ -15,13 +15,42 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'guard-rspec'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec'
-  s.add_development_dependency 'rb-inotify'
+  s.add_development_dependency 'rb-inotify' # Filesystem watcher for Guard on Linux
 
   s.authors       = ['Dean Brundage']
   s.email         = ['dean@newrepublicbrewing.com']
 
-  s.files         = [ 'README.md', 'lib/drink-socially.rb' ]
-  s.test_files    = [ 'spec/drink-socially_spec.rb' ]
+  s.files         = [
+                      'LICENSE',
+                      'README.md',
+                      'lib/drink-socially.rb',
+                      'lib/drink-socially/api.rb',
+                      'lib/drink-socially/api/credential.rb',
+                      'lib/drink-socially/api/notification.rb',
+                      'lib/drink-socially/api/pagination.rb',
+                      'lib/drink-socially/api/rate_limit.rb',
+                      'lib/drink-socially/api/response.rb',
+                      'lib/drink-socially/api_object.rb',
+                      'lib/drink-socially/checkin.rb',
+                      'lib/drink-socially/helpers/symbolifer.rb',
+                      'lib/drink-socially/http_service.rb',
+                      'lib/drink-socially/http_service/response.rb',
+                      'lib/drink-socially/user.rb',
+                      'lib/drink-socially/version.rb'
+                    ]
+  s.test_files    = [ 
+                      'spec/cases/drink-socially/api/credential_spec.rb',
+                      'spec/cases/drink-socially/api/pagination_spec.rb',
+                      'spec/cases/drink-socially/api/rate_limit_spec.rb',
+                      'spec/cases/drink-socially/api/response_spec.rb',
+                      'spec/cases/drink-socially/api_spec.rb',
+                      'spec/cases/drink-socially/helpers/symbolifer_spec.rb',
+                      'spec/cases/drink-socially/http_service/response_spec.rb',
+                      'spec/cases/drink-socially/http_service_spec.rb',
+                      'spec/cases/drink-socially/version_spec.rb',
+                      'spec/cases/drink-socially_spec.rb',
+                      'spec/spec_helper.rb'
+                    ]
   s.require_paths = ['lib']
 
   s.platform      = Gem::Platform::RUBY

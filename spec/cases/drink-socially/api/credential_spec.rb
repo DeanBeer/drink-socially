@@ -1,28 +1,28 @@
 require 'spec_helper'
 
-describe NRB::Untappd::API::Credentials do
+describe NRB::Untappd::API::Credential do
 
   let(:app_credential_attrs) { { client_id: 'NewRepublicBrewing', client_secret: 'good_beer' } }
-  let(:app_credentials) { NRB::Untappd::API::Credentials.new app_credential_attrs }
+  let(:app_credentials) { NRB::Untappd::API::Credential.new app_credential_attrs }
 
   let(:user_credential_attrs) { {  access_token: 'brundage' } }
-  let(:user_credentials) { NRB::Untappd::API::Credentials.new user_credential_attrs }
+  let(:user_credentials) { NRB::Untappd::API::Credential.new user_credential_attrs }
 
 
   context 'initialzation error checking' do
 
     it 'blows up when creating a credential with no attributes' do
-      expect { NRB::Untappd::API::Credentials.new }.to raise_error(RuntimeError)
+      expect { NRB::Untappd::API::Credential.new }.to raise_error(RuntimeError)
     end
 
 
     it 'blows up when creating a credential with just a client_id' do
-      expect { NRB::Untappd::API::Credentials.new client_id: 'bmc' }.to raise_error(RuntimeError)
+      expect { NRB::Untappd::API::Credential.new client_id: 'bmc' }.to raise_error(RuntimeError)
     end
 
 
     it 'blows up when creating a credential with just a client_secret' do
-      expect { NRB::Untappd::API::Credentials.new client_secret: 'corn' }.to raise_error(RuntimeError)
+      expect { NRB::Untappd::API::Credential.new client_secret: 'corn' }.to raise_error(RuntimeError)
     end
 
 

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    drink-socially (0.0.1)
+    drink-socially (0.0.2)
       faraday
       faraday_middleware-parse_oj
 

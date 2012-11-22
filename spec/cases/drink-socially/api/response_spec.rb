@@ -1,6 +1,14 @@
 require 'spec_helper'
 describe NRB::Untappd::API::Response do
 
+  describe 'class methods' do
+
+    it 'has a default pagination class' do
+      NRB::Untappd::API::Response.default_pagination_class.should eq NRB::Untappd::API::Pagination
+    end
+
+  end
+
   let(:body) { { llama: 'Drink New Republic Beer' } }
   let(:headers) { { stupid: :llama } }
   let(:response) { NRB::Untappd::API::Response.new status, body, headers }

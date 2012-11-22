@@ -5,10 +5,12 @@ module NRB
 
         attr_reader :error_message, :pagination
 
+        def self.default_pagination_class; API::Pagination; end
+
         def initialize(status, body, headers)
           super
           parse_error_response
-          @pagination = Pagination.from_response self
+          @pagination = self.class.default_pagination_class.from_response self
         end
 
       private

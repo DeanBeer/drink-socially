@@ -2,8 +2,16 @@ require 'spec_helper'
 
 describe NRB::HTTPService do
 
-  it 'has a default middleware' do
-    NRB::HTTPService.default_middleware.should be_a(Proc)
+  describe 'class methods' do
+
+    it 'has a default middleware' do
+      NRB::HTTPService.default_middleware.should be_a(Proc)
+    end
+
+    it 'has a default response class' do
+      NRB::HTTPService.default_response_class.should eq NRB::HTTPService::Response
+    end
+
   end
 
   context 'making requests' do
@@ -14,7 +22,7 @@ describe NRB::HTTPService do
     let(:connection_response)   { double "skal", body: body, headers: headers, status: status }
     let(:headers)    { {} }
     let(:path)       { '/' }
-    let(:response)   { NRB::HTTPService.make_request(verb, path) }
+    let(:response)   { NRB::HTTPService.new(verb, path).make_request }
     let(:status)     { 200 }
     let(:verb)       { :get }
 
@@ -24,7 +32,7 @@ describe NRB::HTTPService do
         Faraday.stub(:new).and_return(connection)
       end
       it 'returns a Response object' do
-        response.should be_a(NRB::HTTPService::Response)
+        response.should be_a(NRB::HTTPService.default_response_class)
       end
 
       it 'resuces with an successful Response object' do
@@ -44,7 +52,7 @@ describe NRB::HTTPService do
       end
 
       it 'resuces with a Response object' do
-        response.should be_a(NRB::HTTPService::Response)
+        response.should be_a(NRB::HTTPService.default_response_class)
       end
 
       it 'resuces with an errored Response object' do
