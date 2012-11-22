@@ -27,7 +27,7 @@ module NRB
         response = connection.send verb, path, (verb == :post ? params : {})
         Response.new response.status.to_i, response.body, response.headers
       rescue Faraday::Error::ParsingError => e
-        Response.new 500, {'error' => e.message}, nil
+        Response.new 500, {error: e.message}, nil
       end
 
     end

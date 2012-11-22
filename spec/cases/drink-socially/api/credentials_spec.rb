@@ -1,7 +1,8 @@
 require 'spec_helper'
+
 describe NRB::Untappd::API::Credentials do
 
-  let(:app_credential_attrs) { { client_id: 'NewRepublicBrewing', client_secret: 'love' } }
+  let(:app_credential_attrs) { { client_id: 'NewRepublicBrewing', client_secret: 'good_beer' } }
   let(:app_credentials) { NRB::Untappd::API::Credentials.new app_credential_attrs }
 
   let(:user_credential_attrs) { {  access_token: 'brundage' } }

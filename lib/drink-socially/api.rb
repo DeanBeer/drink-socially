@@ -1,6 +1,4 @@
-require 'cgi'
-
-# Missing
+# Missing API Calls
 #   Checkin http://untappd.com/api/docs/v4#checkin
 #   Add Comment http://untappd.com/api/docs/v4#add_comment
 
@@ -18,12 +16,13 @@ module NRB
 
       attr_reader :credentials, :rate_limit, :response
 
+
       def self.api_version; API_VERSION; end
       def self.server; SERVER; end
 
 
       def accept_friend(user_id, args={})
-        api_call :post, "/friend/accept/#{user_id}", args
+        api_call :post, "friend/accept/#{user_id}", args
       end
 
 
@@ -38,45 +37,51 @@ module NRB
 
 
       def beer_checkins(beer_id, args={})
-        api_call :get, "/beer/checkins/#{beer_id}", args
+        api_call :get, "beer/checkins/#{beer_id}", args
       end
       alias_method :beer_feed, :beer_checkins
 
 
       def beer_info(beer_id, args={})
-        api_call :get, "/beer/info/#{beer_id}", args
+        api_call :get, "beer/info/#{beer_id}", args
       end
 
 
       def beer_search(query, args={})
         args[:q] = query
-        api_call :get, "/search/beer", args
+        api_call :get, "search/beer", args
       end
 
 
       def brewery_feed(brewery_id, args={})
-        api_call :get, "/brewery/checkins/#{brewery_id}", args
+        api_call :get, "brewery/checkins/#{brewery_id}", args
       end
 
 
       def brewery_info(brewery_id, args={})
-        api_call :get, "/brewery/info/#{brewery_id}", args
+        api_call :get, "brewery/info/#{brewery_id}", args
       end
 
 
       def brewery_search(query, args={})
         args[:q] = query
-        api_call :get, "/search/brewery", args
+        api_call :get, "search/brewery", args
       end
 
 
-      def checkin(checkin_id, args={})
-        api_call :get, "/checkin/view/#{checkin_id}", args
+      def checkin_info(checkin_id, args={})
+        api_call :get, "checkin/view/#{checkin_id}", args
+      end
+
+
+      def create_checkin(beer_id, args={})
+        args[:bid] = beer_id
+        api_call :post, 'checkin/add', args
       end
 
 
       def foursquare_venue_info(venue_id, args={})
-        api_call :get, "/venue/foursquare_lookup/#{venue_id}", args
+        api_call :get, "venue/foursquare_lookup/#{venue_id}", args
       end
 
 
@@ -92,27 +97,27 @@ module NRB
 
 
       def notifications(args={})
-        api_call :get, "/notifications", args
+        api_call :get, "notifications", args
       end
 
 
       def pending_friends(args={})
-        api_call :get, "/user/pending", args
+        api_call :get, "user/pending", args
       end
 
 
       def reject_friend(user_id, args={})
-        api_call :post, "/friend/reject/#{user_id}", args
+        api_call :post, "friend/reject/#{user_id}", args
       end
 
 
       def remove_comment(comment_id, args={})
-        api_call :post, "/checkin/deletecomment/#{comment_id}", args
+        api_call :post, "checkin/deletecomment/#{comment_id}", args
       end
 
 
       def remove_friend(user_id, args={})
-        api_call :get, "/friend/remove/#{user_id}", args
+        api_call :get, "friend/remove/#{user_id}", args
       end
 
 
@@ -123,7 +128,7 @@ module NRB
 
 
       def request_friend(user_id, args={})
-        api_call :get, "/friend/request/#{user_id}", args
+        api_call :get, "friend/request/#{user_id}", args
       end
 
 
@@ -133,7 +138,7 @@ module NRB
 
 
       def toast(checkin_id, args={})
-        api_call :get, "/checkin/toast/#{checkin_id}", args
+        api_call :get, "checkin/toast/#{checkin_id}", args
       end
 
 
@@ -143,43 +148,43 @@ module NRB
 
 
       def user_badges(username, args={})
-        api_call :get, "/user/badges/#{username}", args
+        api_call :get, "user/badges/#{username}", args
       end
 
 
       def user_beers(username=nil, args={})
-        api_call :get, "/user/beers/#{username}", args
+        api_call :get, "user/beers/#{username}", args
       end
       alias_method :user_distinct_beers, :user_beers
 
 
       def user_feed(username=nil, args={})
-        api_call :get, "/user/checkins/#{username}", args
+        api_call :get, "user/checkins/#{username}", args
       end
 
 
       def user_friends(username=nil, args={})
-        api_call :get, "/user/friends/#{username}", args
+        api_call :get, "user/friends/#{username}", args
       end
 
 
       def user_info(username, args={})
-        api_call :get, "/user/info/#{username}", args
+        api_call :get, "user/info/#{username}", args
       end
 
 
       def user_wishlist(username=nil, args={})
-        api_call :get, "/user/wishlist/#{username}", args
+        api_call :get, "user/wishlist/#{username}", args
       end
 
 
       def venue_feed(venue_id, args={})
-        api_call :get, "/venue/checkins/#{venue_id}", args
+        api_call :get, "venue/checkins/#{venue_id}", args
       end
 
 
       def venue_info(venue_id, args={})
-        api_call :get, "/venue/info/#{venue_id}", args
+        api_call :get, "venue/info/#{venue_id}", args
       end
 
 

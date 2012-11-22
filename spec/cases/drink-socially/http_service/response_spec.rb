@@ -2,9 +2,10 @@ require 'spec_helper'
 
 describe NRB::HTTPService::Response do
 
-  let(:body) { 'Drink New Republic Beer' }
+  let(:body) { { 'llama' => 'Drink New Republic Beer' } }
   let(:headers) { { stupid: :llama } }
   let(:response) { NRB::HTTPService::Response.new status, body, headers }
+  let(:status) { 200 }
 
 
   context 'successful requests' do
@@ -32,6 +33,13 @@ describe NRB::HTTPService::Response do
       response.should_not be_success
     end
 
+  end
+
+
+  it 'converts string keys in the body to symbols' do
+    response.body.each do |k,v|
+      k.should be_a(Symbol)
+    end
   end
 
 end

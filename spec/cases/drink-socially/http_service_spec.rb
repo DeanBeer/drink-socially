@@ -52,7 +52,7 @@ describe NRB::HTTPService do
       end
 
       it 'gives you the error' do
-        response.body['error'].should eq message
+        response.body[:error].should eq message
       end
 
     end
