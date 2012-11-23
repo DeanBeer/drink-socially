@@ -35,11 +35,4 @@ describe NRB::HTTPService::Response do
 
   end
 
-
-  it 'converts string keys in the body to symbols' do
-    response.body.each do |k,v|
-      k.should be_a(Symbol)
-    end
-  end
-
 end

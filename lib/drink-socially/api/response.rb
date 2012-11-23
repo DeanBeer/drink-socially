@@ -5,7 +5,7 @@ module NRB
 
         attr_reader :error_message, :pagination
 
-        def self.default_pagination_class; API::Pagination; end
+        def self.default_pagination_class; NRB::Untappd::API::Pagination; end
 
         def initialize(status, body, headers)
           super

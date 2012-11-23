@@ -1,6 +1,5 @@
 require 'drink-socially/http_service'
 require 'drink-socially/version'
-require 'drink-socially/helpers/symbolifer'
 
 module NRB
   module Untappd

@@ -2,7 +2,7 @@ module NRB
   module Untappd
     class API
 
-      API_VERSION = 'v4'          # Use NRB::Untappd::API.api_version instead
+      API_VERSION = :v4           # Use NRB::Untappd::API.api_version instead
       SERVER = 'api.untappd.com'  # Use NRB::Untappd::API.server instead
 
       autoload :Credential, 'drink-socially/api/credential'
@@ -16,6 +16,7 @@ module NRB
       def self.default_credential_class; Credential; end
       def self.default_rate_limit_class; RateLimit; end
       def self.default_response_class; Response; end
+      def self.requestor; NRB::Untappd; end
       def self.server; SERVER; end
 
 
@@ -61,7 +62,7 @@ module NRB
         path = find_path_at(endpoint)
         args = @credential.merge(args)
 
-        response = NRB::Untappd.make_request(verb, path, args)
+        response = self.class.requestor.make_request(verb, path, args)
         @rate_limit = self.class.default_rate_limit_class.new(response.headers)
         @response = self.class.default_response_class.new(response.status.to_i, response.body, response.headers)
       end

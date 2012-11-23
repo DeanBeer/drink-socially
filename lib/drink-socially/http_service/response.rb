@@ -1,3 +1,5 @@
+require 'hashie'
+
 module NRB
   class HTTPService
     class Response
@@ -11,8 +13,8 @@ module NRB
 
       def initialize(status, body, headers)
         @status = status
-        @body = body.nrb_symbolify
-        @headers = headers
+        @body = Hashie::Mash.new body
+        @headers = Hashie::Mash.new headers
       end
 
 
