@@ -31,13 +31,10 @@ Gem::Specification.new do |s|
                       'lib/drink-socially/api/pagination.rb',
                       'lib/drink-socially/api/rate_limit.rb',
                       'lib/drink-socially/api/response.rb',
-                      'lib/drink-socially/api_object.rb',
-                      'lib/drink-socially/checkin.rb',
-                      'lib/drink-socially/helpers/symbolifer.rb',
                       'lib/drink-socially/http_service.rb',
                       'lib/drink-socially/http_service/response.rb',
-                      'lib/drink-socially/user.rb',
                       'lib/drink-socially/version.rb'
+
                     ]
   s.test_files    = [ 
                       'spec/cases/drink-socially/api/credential_spec.rb',
@@ -45,7 +42,6 @@ Gem::Specification.new do |s|
                       'spec/cases/drink-socially/api/rate_limit_spec.rb',
                       'spec/cases/drink-socially/api/response_spec.rb',
                       'spec/cases/drink-socially/api_spec.rb',
-                      'spec/cases/drink-socially/helpers/symbolifer_spec.rb',
                       'spec/cases/drink-socially/http_service/response_spec.rb',
                       'spec/cases/drink-socially/http_service_spec.rb',
                       'spec/cases/drink-socially/version_spec.rb',

@@ -10,7 +10,7 @@ module NRB
       autoload :RateLimit,   'drink-socially/api/rate_limit'
       autoload :Response,    'drink-socially/api/response'
 
-      attr_reader :credential, :rate_limit, :response
+      attr_reader :credential, :last_response, :rate_limit
 
       def self.api_version; API_VERSION; end
       def self.default_credential_class; Credential; end
@@ -39,15 +39,20 @@ module NRB
       # http://untappd.com/api/docs/v4#add_comment
       def add_comment(checkin_id, comment, args={})
         args[:comment] = comment
-        api_call :post, "checkin/addcomment/#{checkin_id}", args
+        response = api_call :post, "checkin/addcomment/#{checkin_id}", args do |response|
+          response.comments.items
+        end
       end
 
 
       # http://untappd.com/api/docs/v4#add_to_wish
       def add_to_wish_list(beer_id, args={})
         args[:bid] = beer_id
-        api_call :get, '/user/wishlist/add', args
+        api_call :get, '/user/wishlist/add', args do |response|
+          response.beer
+        end
       end
+      alias_method :add_to_wishlist, :add_to_wish_list
 
 
       # http://untappd.com/api/docs/v4#toast
@@ -64,20 +69,26 @@ module NRB
 
         response = self.class.requestor.make_request(verb, path, args)
         @rate_limit = self.class.default_rate_limit_class.new(response.headers)
-        @response = self.class.default_response_class.new(response.status.to_i, response.body, response.headers)
+        @last_response = self.class.default_response_class.new(response.status.to_i, response.body, response.headers)
+        return @last_response if @last_response.errored?
+        block_given? ? yield(@last_response.body.response) : @last_response.body.response
       end
 
 
       # http://untappd.com/api/docs/v4#beer_checkins
       def beer_checkins(beer_id, args={})
-        api_call :get, "beer/checkins/#{beer_id}", args
+        api_call :get, "beer/checkins/#{beer_id}", args do |response|
+          response.checkins.items
+        end
       end
       alias_method :beer_feed, :beer_checkins
 
 
       # http://untappd.com/api/docs/v4#beer_info
       def beer_info(beer_id, args={})
-        api_call :get, "beer/info/#{beer_id}", args
+        api_call :get, "beer/info/#{beer_id}", args do |response|
+          response.beer
+        end
       end
 
 
@@ -90,46 +101,60 @@ module NRB
 
       # http://untappd.com/api/docs/v4#brewery_checkins
       def brewery_checkins(brewery_id, args={})
-        api_call :get, "brewery/checkins/#{brewery_id}", args
+        api_call :get, "brewery/checkins/#{brewery_id}", args do |response|
+          response.checkins.items
+        end
       end
       alias_method :brewery_feed, :brewery_checkins
 
 
       # http://untappd.com/api/docs/v4#brewery_info
       def brewery_info(brewery_id, args={})
-        api_call :get, "brewery/info/#{brewery_id}", args
+        response = api_call :get, "brewery/info/#{brewery_id}", args do |response|
+          response.brewery
+        end
       end
 
 
       # http://untappd.com/api/docs/v4#brewery_search
       def brewery_search(query, args={})
         args[:q] = query
-        api_call :get, "search/brewery", args
+        api_call :get, "search/brewery", args do |response|
+          response.brewery.items
+        end
       end
 
 
       # http://untappd.com/api/docs/v4#details
       def checkin_info(checkin_id, args={})
-        api_call :get, "checkin/view/#{checkin_id}", args
+        api_call :get, "checkin/view/#{checkin_id}", args do |response|
+          response.checkin
+        end
       end
 
 
       # http://untappd.com/api/docs/v4#delete_comment
       def delete_comment(comment_id, args={})
-        api_call :post, "checkin/deletecomment/#{comment_id}", args
+        api_call :post, "checkin/deletecomment/#{comment_id}", args do |response|
+          response.comments
+        end
       end
       alias_method :remove_comment, :delete_comment
 
 
       # http://untappd.com/api/docs/v4#foursquare_lookup
       def foursquare_venue_info(venue_id, args={})
-        api_call :get, "venue/foursquare_lookup/#{venue_id}", args
+        api_call :get, "venue/foursquare_lookup/#{venue_id}", args do |response|
+          response.venue.items.first
+        end
       end
 
 
       # http://untappd.com/api/docs/v4#feed
       def friend_feed(args={})
-        api_call :get, '/checkin/recent', args
+        api_call :get, '/checkin/recent', args do |response|
+          response.checkins.items
+        end
       end
 
 
@@ -140,14 +165,26 @@ module NRB
 
 
       # http://untappd.com/api/docs/v4#activity_on_you
+      def news(args={})
+        api_call :get, "notifications", args do |response|
+          response.news.items
+        end
+      end
+
+
+      # http://untappd.com/api/docs/v4#activity_on_you
       def notifications(args={})
-        api_call :get, "notifications", args
+        api_call :get, "notifications", args do |response|
+          response.notifications.items
+        end
       end
 
 
       # http://untappd.com/api/docs/v4#friend_pending
       def pending_friends(args={})
-        api_call :get, "user/pending", args
+        api_call :get, "user/pending", args do |response|
+          response.items
+        end
       end
 
 
@@ -179,7 +216,9 @@ module NRB
 
       # http://untappd.com/api/docs/v4#thepub
       def the_pub(args={})
-        api_call :get, '/thepub', args
+        api_call :get, '/thepub', args do |response|
+          response.checkins.items
+        end
       end
 
 
@@ -190,51 +229,65 @@ module NRB
 
 
       # http://untappd.com/api/docs/v4#badges
-      def user_badges(username, args={})
+      def user_badges(username=nil, args={})
         api_call :get, "user/badges/#{username}", args
       end
 
 
       # http://untappd.com/api/docs/v4#user_distinct
       def user_distinct_beers(username=nil, args={})
-        api_call :get, "user/beers/#{username}", args
+        api_call :get, "user/beers/#{username}", args do |response|
+          response.beers.items
+        end
       end
       alias_method :user_beers, :user_distinct_beers
 
 
       # http://untappd.com/api/docs/v4#user_feed
       def user_feed(username=nil, args={})
-        api_call :get, "user/checkins/#{username}", args
+        api_call :get, "user/checkins/#{username}", args do |response|
+          response.checkins.items
+        end
       end
 
 
       # http://untappd.com/api/docs/v4#friends
       def user_friends(username=nil, args={})
-        api_call :get, "user/friends/#{username}", args
+        api_call :get, "user/friends/#{username}", args do |response|
+          response.items
+         end
       end
 
 
       # http://untappd.com/api/docs/v4#user_info
       def user_info(username, args={})
-        api_call :get, "user/info/#{username}", args
+        api_call :get, "user/info/#{username}", args do |response|
+          response.user
+        end
       end
 
 
       # http://untappd.com/api/docs/v4#wish_list
       def user_wish_list(username=nil, args={})
-        api_call :get, "user/wishlist/#{username}", args
+        api_call :get, "user/wishlist/#{username}", args do |response|
+          response.beers.items
+        end
       end
 
 
       # http://untappd.com/api/docs/v4#venue_checkins
       def venue_feed(venue_id, args={})
-        api_call :get, "venue/checkins/#{venue_id}", args
+        api_call :get, "venue/checkins/#{venue_id}", args do |response|
+          response.checkins.items
+        end
       end
 
 
       # http://untappd.com/api/docs/v4#venue_info
       def venue_info(venue_id, args={})
-        api_call :get, "venue/info/#{venue_id}", args
+        api_call :get, "venue/info/#{venue_id}", args do |response|
+          response.venue
+        end
       end
 
     private

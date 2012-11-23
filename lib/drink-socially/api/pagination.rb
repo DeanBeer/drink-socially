@@ -1,5 +1,4 @@
 require 'uri'
-
 module NRB
   module Untappd
     class API
@@ -8,11 +7,10 @@ module NRB
         def self.from_response(response)
           # It's duck types (almost) all the way down
           return unless response.respond_to?(:body) &&
-                        response.body.respond_to?(:[]) &&
-                        !! response.body[:response] &&
-                        response.body[:response].is_a?(Hash) &&
-                        !! response.body[:response][:pagination]
-          new response.body[:response][:pagination]
+                        response.body.respond_to?(:response) &&
+                        response.body.response.respond_to?(:pagination) &&
+                        !! response.body.response.pagination
+          new response.body.response.pagination
         end
 
 
