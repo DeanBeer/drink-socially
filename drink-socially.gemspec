@@ -30,7 +30,7 @@ Gem::Specification.new do |s|
                       'lib/drink-socially/api/notification.rb',
                       'lib/drink-socially/api/pagination.rb',
                       'lib/drink-socially/api/rate_limit.rb',
-                      'lib/drink-socially/api/response.rb',
+                      'lib/drink-socially/api/object.rb',
                       'lib/drink-socially/http_service.rb',
                       'lib/drink-socially/http_service/response.rb',
                       'lib/drink-socially/version.rb'
@@ -40,7 +40,7 @@ Gem::Specification.new do |s|
                       'spec/cases/drink-socially/api/credential_spec.rb',
                       'spec/cases/drink-socially/api/pagination_spec.rb',
                       'spec/cases/drink-socially/api/rate_limit_spec.rb',
-                      'spec/cases/drink-socially/api/response_spec.rb',
+                      'spec/cases/drink-socially/api/object_spec.rb',
                       'spec/cases/drink-socially/api_spec.rb',
                       'spec/cases/drink-socially/http_service/response_spec.rb',
                       'spec/cases/drink-socially/http_service_spec.rb',
