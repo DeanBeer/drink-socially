@@ -33,7 +33,7 @@ module NRB
       @connection_opts = connection_opts
       @url = url
       @verb = verb
-      @args = process_args(args)
+      @params = process_args(args)
     end
 
 
@@ -41,7 +41,7 @@ module NRB
 
       connection = self.class.default_http_class.new @url, @connection_opts, &self.class.faraday_middleware
 
-      response = connection.send @verb, @url, @args
+      response = connection.send verb, url, params
 
       self.class.default_response_class.new response.status.to_i, response.body, response.headers
 
@@ -50,6 +50,8 @@ module NRB
     end
 
   private
+
+    attr_reader :params, :verb, :url
 
     def process_args(args)
       return args unless @verb == :post

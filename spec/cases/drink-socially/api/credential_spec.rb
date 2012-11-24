@@ -12,17 +12,17 @@ describe NRB::Untappd::API::Credential do
   context 'initialzation error checking' do
 
     it 'blows up when creating a credential with no attributes' do
-      expect { NRB::Untappd::API::Credential.new }.to raise_error(RuntimeError)
+      expect { NRB::Untappd::API::Credential.new }.to raise_error(NRB::Untappd::API::Credential::IncompleteCredentialError)
     end
 
 
     it 'blows up when creating a credential with just a client_id' do
-      expect { NRB::Untappd::API::Credential.new client_id: 'bmc' }.to raise_error(RuntimeError)
+      expect { NRB::Untappd::API::Credential.new client_id: 'bmc' }.to raise_error(NRB::Untappd::API::Credential::IncompleteCredentialError)
     end
 
 
     it 'blows up when creating a credential with just a client_secret' do
-      expect { NRB::Untappd::API::Credential.new client_secret: 'corn' }.to raise_error(RuntimeError)
+      expect { NRB::Untappd::API::Credential.new client_secret: 'corn' }.to raise_error(NRB::Untappd::API::Credential::IncompleteCredentialError)
     end
 
 

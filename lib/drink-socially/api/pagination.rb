@@ -17,6 +17,7 @@ module NRB
         def initialize(pagination)
           @api_max_id = pagination[:max_id].to_i
           @uris   = { api_next: URI.parse(pagination[:next_url]),
+                      api_prev: URI.parse(pagination[:since_url]),
                       api_since: URI.parse(pagination[:since_url])
                     }
         end
@@ -30,10 +31,7 @@ module NRB
         # Warning: The API will return the most recent results if next_id is
         #          greater than the most recent result
         def next_uri
-          return @uris[:next] if @uris[:next]
-          @uris[:next] = @uris[:api_next]
-          @uris[:next].query = "since=#{next_id}"
-          @uris[:next]
+          uri_for query: "since=#{next_id}", uri: :next
         end
 
 
@@ -49,10 +47,7 @@ module NRB
 
 
         def prev_uri
-          return @uris[:prev] if @uris[:prev]
-          @uris[:prev] = @uris[:api_next]
-          @uris[:prev].query = "max_id=#{prev_id}"
-          @uris[:prev]
+          uri_for query: "max_id=#{prev_id}", uri: :prev
         end
         alias_method :previous_uri, :prev_uri
 
@@ -61,6 +56,16 @@ module NRB
           prev_uri.to_s
         end
         alias_method :previous_url, :prev_url
+
+      private
+
+        def uri_for(opts)
+          return nil unless !! opts[:uri]
+          return @uris[otps[:uri]] if @uris[opts[:uri]]
+          @uris[otps[:uri]] = @uris["api_#{opts[:uri]}".to_sym]
+          @uris[otps[:uri]].query = opts[:query] if opts[:query]
+          @uris[otps[:uri]]
+        end
 
       end
     end

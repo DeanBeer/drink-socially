@@ -5,4 +5,3 @@ guard 'rspec', all_after_pass: false do
   watch( %r{^spec/cases/.+_spec\.rb$} )
 
 end
-

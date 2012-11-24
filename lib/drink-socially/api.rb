@@ -55,14 +55,6 @@ module NRB
       alias_method :add_to_wishlist, :add_to_wish_list
 
 
-      # http://untappd.com/api/docs/v4#toast
-      def add_toast(checkin_id, args={})
-        api_call :get, "checkin/toast/#{checkin_id}", args
-      end
-      alias_method :delete_toast, :add_toast
-      alias_method :toast, :add_toast
-
-
       def api_call(verb, endpoint, args={})
         path = find_path_at(endpoint)
         args = @credential.merge(args)
@@ -166,7 +158,7 @@ module NRB
 
       # http://untappd.com/api/docs/v4#activity_on_you
       def news(args={})
-        api_call :get, "notifications", args do |response|
+        api_call :get, :notifications, args do |response|
           response.news.items
         end
       end
@@ -174,7 +166,7 @@ module NRB
 
       # http://untappd.com/api/docs/v4#activity_on_you
       def notifications(args={})
-        api_call :get, "notifications", args do |response|
+        api_call :get, :notifications, args do |response|
           response.notifications.items
         end
       end
@@ -228,6 +220,14 @@ module NRB
       end
 
 
+      # http://untappd.com/api/docs/v4#toast
+      def toast(checkin_id, args={})
+        api_call :get, "checkin/toast/#{checkin_id}", args
+      end
+      alias_method :delete_toast, :toast
+      alias_method :add_toast, :toast
+
+
       # http://untappd.com/api/docs/v4#badges
       def user_badges(username=nil, args={})
         api_call :get, "user/badges/#{username}", args
@@ -260,7 +260,7 @@ module NRB
 
 
       # http://untappd.com/api/docs/v4#user_info
-      def user_info(username, args={})
+      def user_info(username=nil, args={})
         api_call :get, "user/info/#{username}", args do |response|
           response.user
         end
