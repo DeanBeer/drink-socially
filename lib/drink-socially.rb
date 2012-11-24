@@ -17,8 +17,8 @@ module NRB
       end
 
 
-      def make_request(verb, path, args={})
-        http_service.make_request verb, path, args
+      def make_request(args)
+        http_service.make_request args
       end
 
     end

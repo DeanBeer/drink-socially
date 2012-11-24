@@ -20,8 +20,8 @@ module NRB
       def default_response_class; Response; end
 
 
-      def make_request(verb, url, args={}, connection_opts={})
-        new(verb,url,args,connection_opts).make_request
+      def make_request(args={}, connection_opts={})
+        new(args,connection_opts).make_request
       end
 
     end
@@ -29,22 +29,19 @@ module NRB
     self.faraday_middleware = self.default_middleware
 
 
-    def initialize(verb, url, args={}, connection_opts={})
+    def initialize(args={}, connection_opts={})
       @connection_opts = connection_opts
-      @url = url
-      @verb = verb
+      @response_class = args.delete(:response_class) || self.class.default_response_class
+      @verb = args.delete(:verb)
+      @url = args.delete(:url)
       @params = process_args(args)
     end
 
 
     def make_request
-
       connection = self.class.default_http_class.new @url, @connection_opts, &self.class.faraday_middleware
-
-      response = connection.send verb, url, params
-
-      self.class.default_response_class.new response.status.to_i, response.body, response.headers
-
+      response = connection.send @verb, @url, @params
+      @response_class.new response.status.to_i, response.body, response.headers
     rescue Faraday::Error::ParsingError => e
       self.class.default_response_class.new 500, {error: e.message}, nil
     end

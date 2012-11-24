@@ -22,7 +22,7 @@ describe NRB::HTTPService do
     let(:connection_response)   { double "skal", body: body, headers: headers, status: status }
     let(:headers)    { {} }
     let(:path)       { '/' }
-    let(:response)   { NRB::HTTPService.new(verb, path).make_request }
+    let(:response)   { NRB::HTTPService.new(path: path, verb: verb).make_request }
     let(:status)     { 200 }
     let(:verb)       { :get }
 

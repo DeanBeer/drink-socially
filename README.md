@@ -50,5 +50,5 @@ brundage.rate_limit
 
 All API calls return an `NRB::Untappd::API::Response` object. You can access the full response object with the `last_response` method.
 
-Full documentation for the API calls are detailed [in the wiki](wiki/api_calls).  Also have a look at the [Untappd v4 API documentation](http://untappd.com/api/docs/v4) for details.
+Full documentation for the API calls are detailed [in the wiki](drink-socially/wiki/api_calls).  Also have a look at the [Untappd v4 API documentation](http://untappd.com/api/docs/v4) for details.
 

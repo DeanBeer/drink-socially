@@ -22,8 +22,8 @@ describe NRB::Untappd::API do
         NRB::Untappd::API.default_rate_limit_class.should eq NRB::Untappd::API::RateLimit
       end
 
-      it 'uses Response' do
-        NRB::Untappd::API.default_response_class.should eq NRB::Untappd::API::Response
+      it 'uses Object' do
+        NRB::Untappd::API.default_response_class.should eq NRB::Untappd::API::Object
       end
 
     end
