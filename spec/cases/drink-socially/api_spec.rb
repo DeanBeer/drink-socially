@@ -14,10 +14,6 @@ describe NRB::Untappd::API do
 
     describe 'default helper classes' do
 
-      it 'uses Credential' do
-        NRB::Untappd::API.default_credential_class.should eq NRB::Untappd::API::Credential
-      end
-
       it 'uses RateLimit' do
         NRB::Untappd::API.default_rate_limit_class.should eq NRB::Untappd::API::RateLimit
       end

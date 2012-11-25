@@ -3,59 +3,47 @@ module NRB
     class API
       class Object < HTTPService::Response
 
-        def self.default_pagination_class; NRB::Untappd::API::Pagination; end
-
         attr_reader :attributes, :error_message, :pagination, :results
 
-
-        def extract(*path)
-          @results = drill_into_body(path)
-          define_attributes_from(@results)
-          define_methods_from(@results)
-          @results
-        end
-
-
-        def initialize(status, body, headers)
+        def initialize(args)
           super
           parse_error_response
-          @pagination = self.class.default_pagination_class.from_response self
+          setup_pagination(args)
+          extract_results args[:results_path]
         end
 
       private
 
         def define_attributes_from(hash)
+          return unless hash.respond_to?(:keys)
           @attributes ||= []
-          perform_if_hash(hash) do |attr|
+          perform_unless_respond_to(hash.keys) do |attr|
             @attributes.push(attr.to_sym)
           end
         end
 
 
         def define_methods_from(hash)
-          perform_if_hash(hash) do |meth|
-            instance_eval %Q{ def #{meth}; #{hash[meth]}; end }
-          end
-        end
-
-
-        def perform_if_hash(hash)
           return unless hash.respond_to?(:keys)
-          hash.keys.each do |key|
-            unless respond_to?(key)
-              yield key
-            end
+          perform_unless_respond_to(hash.keys) do |meth|
+            define_singleton_method meth, lambda { hash[meth] }
           end
         end
 
 
-        def drill_into_body(path)
-          if !! body
-            path.inject(body) do |node,method_name|
-              break unless node.respond_to? method_name
-              node.send method_name
-            end
+        def extract_from_body(path)
+          return unless !! body
+          path.inject(body) do |node,method_name|
+            break unless node.respond_to? method_name
+            node.send method_name
           end
+        end
+
+
+        def extract_results(path)
+          @results = extract_from_body path if !! path
+          define_attributes_from @results
+          define_methods_from @results
         end
 
 
@@ -70,6 +58,22 @@ module NRB
           else
             "Could not parse error message from response body"
           end
+        end
+
+
+        def perform_unless_respond_to(arr)
+          return unless arr.respond_to?(:each)
+          arr.each do |key|
+            unless respond_to?(key)
+              yield key
+            end
+          end
+        end
+
+
+        def setup_pagination(args)
+          @paginator = args[:paginator_class] || NRB::Untappd::API::Pagination
+          @pagination = @paginator.from_response self
         end
 
       end

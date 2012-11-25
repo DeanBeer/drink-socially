@@ -13,7 +13,6 @@ module NRB
       attr_reader :credential, :rate_limit
 
       def self.api_version; API_VERSION; end
-      def self.default_credential_class; Credential; end
       def self.default_rate_limit_class; RateLimit; end
       def self.default_response_class; Object; end
       def self.requestor; NRB::Untappd; end
@@ -48,10 +47,9 @@ module NRB
       def add_comment(args)
         validate_api_args args, :checkin_id, :comment
         args[:endpoint] = "checkin/addcomment/#{args.delete(:checkin_id)}"
+        args[:results_path] = [ :response, :comments, :items ]
         args[:verb] = :post
-        response = api_call args do |response|
-          response.extract :response, :comments, :items
-        end
+        api_call args
       end
 
 
@@ -60,9 +58,8 @@ module NRB
       def add_to_wish_list(args)
         validate_api_args args, :bid, :comment
         args[:endpoint] = '/user/wishlist/add'
-        api_call args do |response|
-          response.extract :response, :beer
-        end
+        args[:results_path] = [ :response, :beer ]
+        api_call args
       end
       alias_method :add_to_wishlist, :add_to_wish_list
 
@@ -85,9 +82,8 @@ module NRB
       def beer_checkins(args)
         validate_api_args args, :bid
         args[:endpoint] = "beer/checkins/#{args.delete(:bid)}"
-        api_call args do |response|
-          response.extract :response, :checkins, :items
-        end
+        args[:results_path] = [ :response, :checkins, :items ]
+        api_call args
       end
       alias_method :beer_feed, :beer_checkins
 
@@ -97,9 +93,8 @@ module NRB
       def beer_info(args)
         validate_api_args args, :bid
         args[:endpoint] = "beer/info/#{args.delete(:bid)}"
-        api_call args do |response|
-          response.extract :response, :beer
-        end
+        args[:results_path] = [ :response, :beer ]
+        api_call args
       end
 
 
@@ -117,9 +112,8 @@ module NRB
       def brewery_checkins(args)
         validate_api_args args, :brewery_id
         args[:endpoint] = "brewery/checkins/#{args.delete(:brewery_id)}"
-        api_call args do |response|
-          response.extract :response, :checkins, :items
-        end
+        args[:results_path] = [ :response, :checkins, :items ]
+        api_call args
       end
       alias_method :brewery_feed, :brewery_checkins
 
@@ -129,9 +123,8 @@ module NRB
       def brewery_info(args)
         validate_api_args args, :brewery_id
         args[:endpoint] = "brewery/info/#{args.delete(:brewery_id)}"
-        endpoint = api_call args do |response|
-          response.extract :response, :brewery
-        end
+        args[:results_path] = [ :response, :brewery ]
+        api_call args
       end
 
 
@@ -140,9 +133,8 @@ module NRB
       def brewery_search(args)
         validate_api_args args, :q
         args[:endpoint] = "search/brewery"
-        api_call args do |response|
-          response.extract :response, :brewery, :items
-        end
+        args[:results_path] = [ :response, :brewery, :items ]
+        api_call args
       end
 
 
@@ -151,9 +143,8 @@ module NRB
       def checkin_info(args)
         validate_api_args :checkin_id
         args[:endpoint] = "checkin/view/#{args.delete(checkin_id)}"
-        api_call args do |response|
-          response.extract :response, :checkin
-        end
+        args[:results_path] = [ :response, :checkin ]
+        api_call args
       end
 
 
@@ -162,10 +153,9 @@ module NRB
       def delete_comment(args)
         validate_api_args :comment_id
         args[:endpoint] = "checkin/deletecomment/#{args.delete(comment_id)}"
+        args[:results_path] = [ :response, :comments ]
         args[:verb] = :post
-        api_call args do |response|
-          response.extract :response, :comments
-        end
+        api_call args
       end
       alias_method :remove_comment, :delete_comment
 
@@ -175,52 +165,49 @@ module NRB
       def foursquare_venue_info(args)
         validate_api_args :venue_id
         args[:endpoint] = "venue/foursquare_lookup/#{args.delete(venue_id)}"
-        api_call args do |response|
-          response.extract :response, :venue, :items, :first
-        end
+        args[:results_path] = [ :response, :venue, :items, :first ]
+        args[:verb] = :post
+        api_call args
       end
 
 
       # http://untappd.com/api/docs/v4#feed
       def friend_feed(args={})
         args[:endpoint] = '/checkin/recent'
-        api_call args do |response|
-          response.extract :response, :checkins, :items
-        end
+        args[:results_path] = [ :response, :checkins, :items ]
+        api_call args
       end
 
 
-      def initialize(options={})
-        @api_version = options[:api_version] || self.class.api_version
-        @credential = self.class.default_credential_class.new(options)
-        @server = options[:server] || self.class.server
+      def initialize(args={})
+        @api_version = args[:api_version] || self.class.api_version
+        @endpoints = args[:endpoints] || NRB::Untappd.load_config(filekey: (args[:config_file] || 'endpoints.yml'))
+        @credential = args[:credential] || Credential.new(args)
+        @server = args[:server] || self.class.server
       end
 
 
       # http://untappd.com/api/docs/v4#activity_on_you
       def news(args={})
         args[:endpoint] = :notifications
-        api_call args do |response|
-          response.extract :response, :news, :items
-        end
+        args[:results_path] = [ :response, :news, :items ]
+        api_call args
       end
 
 
       # http://untappd.com/api/docs/v4#activity_on_you
       def notifications(args={})
         args[:endpoint] = :notifications
-        api_call args do |response|
-          response.extract :response, :notifications, :items
-        end
+        args[:results_path] = [ :response, :notifications, :items ]
+        api_call args
       end
 
 
       # http://untappd.com/api/docs/v4#friend_pending
       def pending_friends(args={})
         args[:endpoint] = "user/pending"
-        api_call args do |response|
-          response.extract :response
-        end
+        args[:results_path] = [ :response ]
+        api_call args
       end
 
 
@@ -265,9 +252,8 @@ module NRB
       # http://untappd.com/api/docs/v4#thepub
       def the_pub(args={})
         args[:endpoint] = :thepub
-        api_call args do |response|
-          response.extract :response, :checkins, :items
-        end
+        args[:results_path] = [ :response, :checkins, :items ]
+        api_call args
       end
 
 
@@ -299,9 +285,8 @@ module NRB
       # http://untappd.com/api/docs/v4#user_distinct
       def user_distinct_beers(args={})
         args[:endpoint] = "user/beers/#{args.delete(:username)}"
-        api_call args do |response|
-          response.extract :response, :beers, :items
-        end
+        args[:results_path] = [ :response, :beers, :items ]
+        api_call args
       end
       alias_method :user_beers, :user_distinct_beers
 
@@ -309,36 +294,32 @@ module NRB
       # http://untappd.com/api/docs/v4#user_feed
       def user_feed(args={})
         args[:endpoint] = "user/checkins/#{args.delete(:username)}"
-        api_call args do |response|
-          response.extract :response, :checkins, :items
-        end
+        args[:results_path] = [ :response, :checkins, :items ]
+        api_call args
       end
 
 
       # http://untappd.com/api/docs/v4#friends
       def user_friends(args={})
         args[:endpoint] = "user/friends/#{args.delete(:username)}"
-        api_call args do |response|
-          response.extract :response, :items
-         end
+        args[:results_path] = [ :response, :items ]
+        api_call args
       end
 
 
       # http://untappd.com/api/docs/v4#user_info
       def user_info(args={})
         args[:endpoint] = "user/info/#{args.delete(:username)}"
-        api_call args do |response|
-          response.extract :response, :user
-        end
+        args[:results_path] = [ :response, :user ]
+        api_call args
       end
 
 
       # http://untappd.com/api/docs/v4#wish_list
       def user_wish_list(args={})
         args[:endpoint] = "user/wishlist/#{args.delete(:username)}"
-        api_call args do |response|
-          response.extract :response, :beers, :items
-        end
+        args[:results_path] = [ :response, :beers, :items ]
+        api_call args
       end
 
 
@@ -347,9 +328,8 @@ module NRB
       def venue_feed(args)
         validate_api_args args, :venue_id
         args[:endpoint] = "venue/checkins/#{args.delete(:venue_id)}"
-        api_call args do |response|
-          response.extract :response, :checkins, :items
-        end
+        args[:results_path] = [ :response, :chcekins, :items ]
+        api_call args
       end
 
 
@@ -357,9 +337,8 @@ module NRB
       def venue_info(args)
         validate_api_args args, :venue_id
         args[:endpoint] = "venue/info/#{args.delete(:venue_id)}"
-        api_call args do |response|
-          response.extract :response, :venue
-        end
+        args[:results_path] = [ :response, :venue ]
+        api_call args
       end
 
     private

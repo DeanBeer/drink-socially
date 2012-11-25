@@ -1,19 +1,11 @@
 require 'spec_helper'
 describe NRB::Untappd::API::Object do
 
-  describe 'class methods' do
-
-    it 'has a default pagination class' do
-      NRB::Untappd::API::Object.default_pagination_class.should eq NRB::Untappd::API::Pagination
-    end
-
-  end
-
   let(:body) { { llama: { llama: { llama: { llamas: :all_the_way_down,
                                             dude: :sweet 
                                           } } } } }
   let(:headers) { { stupid: :llama } }
-  let(:response) { NRB::Untappd::API::Object.new status, body, headers }
+  let(:response) { NRB::Untappd::API::Object.new body: body, headers: headers, status: status }
   let(:status) { 200 }
 
   it 'has a pagination object' do
@@ -23,27 +15,20 @@ describe NRB::Untappd::API::Object do
 
   context 'extracting an object from the body' do
 
-    let(:results) { response.extract :llama, :llama, :llama }
+    let(:path) { [ :llama, :llama, :llama ] }
+    let(:response) { NRB::Untappd::API::Object.new body: body, headers: headers, status: status, results_path: path }
     let(:target) { response.body[:llama][:llama][:llama] }
 
-    it 'extracts an arbitrarily-deep object' do
-      results.should eq target
-    end
-
      it 'assingns the extraction to @results' do
-      results  # to make it happen
       response.results.should eq target
     end
 
     it 'updates @attributes with the hash keys' do
-      results
       response.attributes.collect(&:to_sym).sort.should eq target.keys.collect(&:to_sym).sort
     end
 
 
     it 'defines a methods on response for each hash key' do
-      target.keys.each { |m| response.should_not respond_to(m) }
-      results
       target.keys.each { |m| response.should respond_to(m) }
     end
 

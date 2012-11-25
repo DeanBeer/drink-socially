@@ -11,7 +11,7 @@ describe NRB::Untappd::API::Pagination do
                             next_url: next_url,
                             max_id: max_id
                         } }
-  let(:response) { NRB::Untappd::API::Object.new( status, body, headers ) }
+  let(:response) { NRB::Untappd::API::Object.new body: body, headers: headers, status: status }
   let(:since_url) { "http://api.untappd.com/v4/brewery/checkins/8767?min_id=16546450" }
   let(:status) { 200 }
 

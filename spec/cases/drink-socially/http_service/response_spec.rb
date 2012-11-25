@@ -4,7 +4,7 @@ describe NRB::HTTPService::Response do
 
   let(:body) { { 'llama' => 'Drink New Republic Beer' } }
   let(:headers) { { stupid: :llama } }
-  let(:response) { NRB::HTTPService::Response.new status, body, headers }
+  let(:response) { NRB::HTTPService::Response.new body: body, headers: headers, status: status }
   let(:status) { 200 }
 
 

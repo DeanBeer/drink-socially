@@ -8,9 +8,15 @@ module NRB
 
       class Credential
 
-        class IncompleteCredentialError < RuntimeError; end
+        class IncompleteCredentialError < ArgumentError; end
+
+        def self.valid_attrs
+          [ :access_token, :client_id, :client_secret ]
+        end
+
 
         def initialize(opts={})
+          opts.slice!(*self.class.valid_attrs)
           @creds = {}
           !! opts[:access_token]  && @creds[:access_token] = CGI::escape(opts[:access_token])
           !! opts[:client_id]     && @creds[:client_id] = CGI::escape(opts[:client_id])
@@ -18,7 +24,7 @@ module NRB
           raise IncompleteCredentialError.new('Provide either API access token or API client id & secret') unless valid?
         end
 
-        [ :access_token, :client_id, :client_secret ].each do |m|
+        valid_attrs.each do |m|
           define_method m do
             @creds[m]
           end

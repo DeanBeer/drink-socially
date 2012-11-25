@@ -11,10 +11,10 @@ module NRB
       end
 
 
-      def initialize(status, body, headers)
-        @status = status
-        @body = Hashie::Mash.new body
-        @headers = Hashie::Mash.new headers
+      def initialize(args)
+        @status = args[:status]
+        @body = Hashie::Mash.new args[:body]
+        @headers = Hashie::Mash.new args[:headers]
       end
 
 
