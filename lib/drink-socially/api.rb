@@ -105,7 +105,7 @@ module NRB
 
 
       def get_config(endpoint)
-        config = @endpoints[endpoint]
+        config = @credential.merge(@endpoints[endpoint])
         return unless config
         config[:verb] ||= :get
         config
