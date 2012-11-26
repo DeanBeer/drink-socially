@@ -1,0 +1,231 @@
+---
+:accept_friend:
+  :endpoint: "friend/accept/:user_id:"
+  :required_args:
+    - :user_id
+  :verb: :post
+
+:add_comment:
+  :endpoint: "checkin/addcomment/:checkin_id:"
+  :required_args:
+    - :checkin_id
+    - :comment
+  :results_path:
+    - :response
+    - :comments
+    - :items
+  :verb: :post
+
+:add_to_wish_list:
+  :endpoint: user/wishlist/add
+  :method_aliases:
+    - :add_to_wishlist
+  :required_args:
+    - :bid
+  :results_path:
+    - :response
+    - :beer
+
+:beer_checkins:
+  :endpoint: "beer/checkins/:bid:"
+  :method_aliases:
+    - :beer_feed
+  :required_args:
+    - :bid
+  :results_path:
+    - :response
+    - :checkins
+    - :items
+
+:beer_info:
+  :endpoint: "beer/info/:bid:"
+  :required_args:
+    - :bid
+  :results_path:
+    - :response
+    - :beer
+
+:beer_search:
+  :endpoint: search/beer
+  :required_args:
+    - :q
+
+:brewery_checkins:
+  :endpoint: "brewery/checkins/:brewery_id:"
+  :method_aliases:
+    - :brewery_feed
+  :required_args:
+    - :brewery_id
+  :results_path:
+    - :response
+    - :checkins
+    - :items
+
+:brewery_info:
+  :endpoint: "brewery/info/:brewery_id:"
+  :required_args:
+    - :brewery_id
+  :results_path:
+    - :response
+    - :brewery
+
+:brewery_search:
+  :endpoint: search/brewery
+  :required_args:
+    - :q
+  :results_path:
+    - :response
+    - :brewery
+    - :items
+
+:checkin_info:
+  :endpoint: "checkin/view/:checkin_id:"
+  :required_args:
+    - :checkin_id
+  :results_path:
+    - :response
+    - :checkin
+
+:delete_comment:
+  :endpoint: "checkin/deletecomment/:comment_id:"
+  :method_aliases:
+    - :remove_comment
+  :required_args:
+    - :comment_id
+  :results_path:
+    - :response
+    - :comments
+  :verb: :post
+
+:foursquare_venue_info:
+  :endpoint: "venue/foursquare_lookup/:venue_id:"
+  :required_args:
+    - :venue_id
+  :results_path:
+    - :response
+    - :venue
+    - :items
+    - :first
+  :verb: :post
+
+:friend_feed:
+  :endpoint: checkin/recent
+  :results_path:
+    - :response
+    - :checkins
+    - :items
+
+:news:
+  :endpoint: notifications
+  :results_path:
+    - :response
+    - :news
+    - :items
+
+:notifications:
+  :endpoint: notifications
+  :results_path:
+    - :response
+    - :notifications
+    - :items
+
+:pending_friends:
+  :endpoint: user/pending
+  :results_path:
+    - :response
+
+:reject_friend:
+  :endpoint: "friend/reject/:user_id:"
+  :required_args:
+    - :user_id
+  :verb: :post
+
+:remove_friend:
+  :endpoint: "friend/remove/:user_id:"
+  :required_args:
+    - :user_id
+
+:remove_from_wish_list:
+  :endpoint: user/wishlist/remove
+  :method_aliases:
+    - :delete_from_wish_list
+  :required_args:
+    - :bid
+
+:request_friend:
+  :endpoint: "friend/request/:user_id:"
+  :required_args:
+    - :user_id
+
+:the_pub:
+  :endpoint: thepub
+  :results_path:
+    - :response
+    - :checkins
+    - :items
+
+:trending:
+  :endpoint: beer/trending
+
+:toast:
+  :endpoint: "checkin/toast/:checkin_id:"
+  :method_aliases:
+    - :add_toast
+    - :delete_toast
+  :required_args:
+    - :checkin_id
+
+:user_badges:
+  :endpoint: "user/badges/:username:"
+
+:user_distinct_beers:
+  :endpoint: "user/beers/:username:"
+  :method_aliases:
+    - :user_beers
+  :results_path:
+    - :response
+    - :beers
+    - :items
+
+:user_feed:
+  :endpoint: "user/checkins/:username:"
+  :results_path:
+    - :response
+    - :checkins
+    - :items
+
+:user_friends:
+  :endpoint: "user/friends/:username:"
+  :results_path:
+    - :response
+    - :items
+
+:user_info:
+  :endpoint: "user/info/:username:"
+  :results_path:
+    - :response
+    - :user
+
+:user_wish_list:
+  :endpoint: "user/wishlist/:username:"
+  :results_path:
+    - :response
+    - :beers
+    - :items
+
+:venue_feed:
+  :endpoint: "venue/checkins/:venue_id:"
+  :required_args:
+    - :venue_id
+  :results_path:
+    - :response
+    - :checkins
+    - :items
+
+:venue_info:
+  :endpoint: "venue/info/:venue_id:"
+  :required_args:
+    - :venue_id
+  :results_path:
+    - :response
+    - :venue

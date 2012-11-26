@@ -10,7 +10,7 @@ module NRB
 
       attr_reader :data
 
-      def_delegators :@data, :[], :keys
+      def_delegators :@data, :[], :each, :keys
 
       def initialize(args)
         load_data(args)

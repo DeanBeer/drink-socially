@@ -35,13 +35,15 @@ module NRB
       @verb = args.delete(:verb)
       @url = args.delete(:url)
       @params = process_args(args)
+      @args = args
     end
 
 
     def make_request
       connection = self.class.default_http_class.new @url, @connection_opts, &self.class.faraday_middleware
       response = connection.send @verb, @url, @params
-      @response_class.new body: response.body, headers: response.headers, status: response.status.to_i
+      args = @args.merge( { body: response.body, headers: response.headers, status: response.status.to_i } )
+      @response_class.new args
     rescue Faraday::Error::ParsingError => e
       self.class.default_response_class.new body: {error: e.message}, status: 500
     end

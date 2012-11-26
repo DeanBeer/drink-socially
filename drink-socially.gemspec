@@ -33,18 +33,19 @@ Gem::Specification.new do |s|
                       'lib/drink-socially/api/object.rb',
                       'lib/drink-socially/api/pagination.rb',
                       'lib/drink-socially/api/rate_limit.rb',
+                      'lib/drink-socially/api/url_tokenizer.rb',
                       'lib/drink-socially/config.rb',
                       'lib/drink-socially/extensions/hash.rb',
                       'lib/drink-socially/http_service.rb',
                       'lib/drink-socially/http_service/response.rb',
                       'lib/drink-socially/version.rb'
-
                     ]
   s.test_files    = [ 
                       'spec/cases/drink-socially/api/credential_spec.rb',
                       'spec/cases/drink-socially/api/object_spec.rb',
                       'spec/cases/drink-socially/api/pagination_spec.rb',
                       'spec/cases/drink-socially/api/rate_limit_spec.rb',
+                      'spec/cases/drink-socially/api/url_tokenizer_spec.rb',
                       'spec/cases/drink-socially/api_spec.rb',
                       'spec/cases/drink-socially/config_spec.rb',
                       'spec/cases/drink-socially/extensions/hash_spec.rb',
@@ -54,7 +55,6 @@ Gem::Specification.new do |s|
                       'spec/cases/drink-socially_spec.rb',
                       'spec/spec_helper.rb',
                       'spec/support/config.yml'
-
                     ]
   s.require_paths = ['lib']
 

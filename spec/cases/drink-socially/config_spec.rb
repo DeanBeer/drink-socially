@@ -24,6 +24,11 @@ describe NRB::Untappd::Config do
     end
 
 
+    it 'responds to #each' do
+      config.should respond_to(:each)
+    end
+
+
     it 'responds to :keys' do
       config.should respond_to(:keys)
     end
