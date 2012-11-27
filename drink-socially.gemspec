@@ -3,20 +3,20 @@ require 'drink-socially/version'
 
 Gem::Specification.new do |s|
   s.name          = 'drink-socially'
-  s.summary       = 'A gem for interfacing with the Untappd API'
-  s.description   = 'See summary'
+  s.summary       = 'An interface for the Untappd API'
+  s.description   = 'Untappd is a way to socially share and explore beer with your friends and the world.  This gem interfaces with version 4 of the Untappd API'
 
   s.homepage          = 'https://github.com/NewRepublicBrewing/drink-socially'
   s.rubyforge_project = 'drink-socially'
 
-  s.add_dependency 'faraday'
-  s.add_dependency 'faraday_middleware-parse_oj'
-  s.add_dependency 'hashie'
+  s.add_dependency 'faraday', '~> 0.0'
+  s.add_dependency 'faraday_middleware-parse_oj', '~> 0.0'
+  s.add_dependency 'hashie', '~> 1.0'
 
-  s.add_development_dependency 'guard-rspec'
-  s.add_development_dependency 'rake'
-  s.add_development_dependency 'rspec'
-  s.add_development_dependency 'rb-inotify' # Filesystem watcher for Guard on Linux
+  s.add_development_dependency 'guard-rspec', '~> 2.0'
+  s.add_development_dependency 'rake', '~> 10.0'
+  s.add_development_dependency 'rspec', '~> 2.0'
+  s.add_development_dependency 'rb-inotify', '~> 0.0' # Filesystem watcher for Guard on Linux
 
   s.authors       = ['Dean Brundage']
   s.email         = ['dean@newrepublicbrewing.com']

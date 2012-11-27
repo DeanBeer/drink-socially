@@ -2,9 +2,9 @@ PATH
   remote: .
   specs:
     drink-socially (0.0.5)
-      faraday
-      faraday_middleware-parse_oj
-      hashie
+      faraday (~> 0.0)
+      faraday_middleware-parse_oj (~> 0.0)
+      hashie (~> 1.0)
 
 GEM
   remote: http://rubygems.org/
@@ -56,7 +56,7 @@ PLATFORMS
 
 DEPENDENCIES
   drink-socially!
-  guard-rspec
-  rake
-  rb-inotify
-  rspec
+  guard-rspec (~> 2.0)
+  rake (~> 10.0)
+  rb-inotify (~> 0.0)
+  rspec (~> 2.0)
