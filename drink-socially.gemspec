@@ -12,7 +12,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'faraday'
   s.add_dependency 'faraday_middleware-parse_oj'
   s.add_dependency 'hashie'
-#  s.add_dependency 'yaml'
 
   s.add_development_dependency 'guard-rspec'
   s.add_development_dependency 'rake'

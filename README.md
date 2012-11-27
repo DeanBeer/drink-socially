@@ -18,7 +18,7 @@ Ruby 1.9
 require 'drink-socially'
 
 # Per-user access token taken from OAuth
-brundage = NRB::Untappd::API.new access_token: '7A23A8BEER81D2580E&CEFC405C60693AC476AA'
+brundage = NRB::Untappd::API.new access_token: 'BEER7A23A881D2580E&CEFC405C60693AC476AA'
 
 new_republic = brundage.brewery_info brewery_id: 8767
 => #<Hashie::Mash beer_count=13 beer_list=....
@@ -36,7 +36,7 @@ new_republic.brewery_name
 
 ```ruby
 # Get your id & secret from http://untappd.com/api/dashboard
-new_republic_app = NRB::Untappd::API.new client_id: '645c10bc59f30e34d6fd265cfdeb75e', client_secret: '9ffe686c814207df12f9b0e0bc0cdab'
+new_republic_app = NRB::Untappd::API.new client_id: 'beer645c10bc59f30e34d6fd265cfdeb75e', client_secret: '9ffe686c814207df12f9b0e0bc0cdabeer'
 ```
 
 ## Methods
