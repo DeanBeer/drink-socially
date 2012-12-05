@@ -3,6 +3,7 @@
 [![Build Status](https://secure.travis-ci.org/NewRepublicBrewing/drink-socially.png)](http://travis-ci.org/NewRepublicBrewing/drink-socially)
 [![Dependency Status](https://gemnasium.com/NewRepublicBrewing/drink-socially.png)](https://gemnasium.com/NewRepublicBrewing/drink-socially)
 [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/NewRepublicBrewing/drink-socially)
+[![Buggerall](https://buggerall.herokuapp.com/bug/drink-socially.png)](https://github.com/brundage/buggerall)
 
 A gem for interfacing with the Untappd API
 
