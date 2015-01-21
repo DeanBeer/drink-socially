@@ -9,7 +9,7 @@ module NRB
       autoload :Pagination,      'drink-socially/api/pagination'
       autoload :RateLimit,       'drink-socially/api/rate_limit'
       autoload :Object,          'drink-socially/api/object'
-      autoload :URLTokenizer, 'drink-socially/api/url_tokenizer'
+      autoload :URLTokenizer,    'drink-socially/api/url_tokenizer'
 
       attr_reader :credential, :endpoints, :rate_limit
 
@@ -89,7 +89,7 @@ module NRB
 
 
       def endpoint_base
-        "http://#{@server}/#{@api_version}/"
+        "https://#{@server}/#{@api_version}/"
       end
 
 
