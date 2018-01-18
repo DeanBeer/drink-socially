@@ -34,40 +34,52 @@ module NRB
 
 
       def api_call(args)
-        endpoint = args.delete(:endpoint)
-        config = get_config endpoint
-        return unless config
+        if args[:url]
+          config = get_config args[:url]
+          args.merge! config
 
-        validate_api_args args, *config[:required_args]
+        else
+          endpoint = args.delete(:endpoint)
+          config = get_config endpoint
 
-        args.merge!(config)
+          return unless config
+
+          validate_api_args args, *config[:required_args]
+
+          args.merge!(config)
+
+          tokenizer = URLTokenizer.new map: args, string: args.delete(:endpoint)
+          args[:url] = find_path_at tokenizer.tr
+
+        end
 
         args[:response_class] ||= self.class.default_response_class
 
-        tokenizer = URLTokenizer.new map: args, string: args.delete(:endpoint)
-        args[:url] = find_path_at tokenizer.tr
-
         response = self.class.requestor.make_request(args)
         @rate_limit = self.class.default_rate_limit_class.new(response.headers)
+        response.api = self
         response
       end
 
 
       def initialize(args={})
         @api_version = args[:api_version] || self.class.api_version
-        @credential = args[:credential] || Credential.new(args.dup)
+        self.credential = args[:credential] || Credential.new(args.dup)
         @server = args[:server] || self.class.server
         define_endpoints_from(args)
       end
 
     private
 
+      attr_writer :credential, :endpoints
+
       def api_call_lambda(args)
         lambda { |opts={}| api_call opts.merge({endpoint: args[:endpoint]}) }
       end
 
+
       def credential_string_for_url
-        @credential.is_user? ? "?access_token=#{@credential.access_token}" : ""
+        credential.is_user? ? "?access_token=#{credential.access_token}" : ""
       end
 
 
@@ -80,8 +92,8 @@ module NRB
 
 
       def define_endpoints_from(args)
-        @endpoints = args[:endpoints] || NRB::Untappd.load_config(filekey: (args[:config_file] || 'endpoints.yml'))
-        @endpoints.each do |endpoint,endpoint_config|
+        self.endpoints = args[:endpoints] || NRB::Untappd.load_config(filekey: (args[:config_file] || 'endpoints.yml'))
+        endpoints.each do |endpoint,endpoint_config|
           define_singleton_method endpoint, api_call_lambda(endpoint: endpoint)
           endpoint_config[:method_aliases] && define_endpoint_aliases(orig: endpoint, aliases: endpoint_config[:method_aliases])
         end
@@ -105,7 +117,8 @@ module NRB
 
 
       def get_config(endpoint)
-        config = @credential.merge(@endpoints[endpoint])
+        endpoint_config = endpoints[endpoint] || {}
+        config = credential.merge endpoint_config
         return unless config
         config[:verb] ||= :get
         config

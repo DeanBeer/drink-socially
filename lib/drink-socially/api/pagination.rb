@@ -61,10 +61,10 @@ module NRB
 
         def uri_for(opts)
           return nil unless !! opts[:uri]
-          return @uris[otps[:uri]] if @uris[opts[:uri]]
-          @uris[otps[:uri]] = @uris["api_#{opts[:uri]}".to_sym]
-          @uris[otps[:uri]].query = opts[:query] if opts[:query]
-          @uris[otps[:uri]]
+          return @uris[opts[:uri]] if @uris[opts[:uri]]
+          @uris[opts[:uri]] = @uris["api_#{opts[:uri]}".to_sym]
+          @uris[opts[:uri]].query = opts[:query] if opts[:query]
+          @uris[opts[:uri]]
         end
 
       end

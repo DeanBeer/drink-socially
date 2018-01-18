@@ -3,6 +3,7 @@ module NRB
     class API
       class Object < HTTPService::Response
 
+        attr_accessor :api
         attr_reader :attributes, :error_message, :pagination, :results
 
         def initialize(args)
@@ -10,6 +11,12 @@ module NRB
           parse_error_response
           setup_pagination(args)
           extract_results args[:results_path]
+        end
+
+
+        def prev_feed
+          # Raw-dog it
+          api.api_call url: pagination.prev_url
         end
 
       private
@@ -80,4 +87,3 @@ module NRB
     end
   end
 end
-

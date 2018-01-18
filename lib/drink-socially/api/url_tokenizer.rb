@@ -6,9 +6,10 @@ module NRB
         attr_reader :map, :string
 
         def initialize(args)
+          raise ArgumentError.new("Missing args[:map]") unless args[:map]
+          raise ArgumentError.new("Missing args[:string]") unless args[:string]
           @map = args[:map]
           @string = args[:string]
-          raise ArgumentError unless @map && @string
         end
 
 
